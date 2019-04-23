@@ -20,3 +20,21 @@ $b = $num->bbb(3);
 
 $str = new str();
 $c = $str->ccc($str);
+
+class MyClass
+{    
+	const CONSTANT = 'constant named "CONSTANT" ';
+	const small = 'constant named "small" ';
+
+	public $small = 'SAME CONTSNAT NAME AS PROPERTIES.';
+	function showConstant() {
+ 		echo self::CONSTANT . "<br>";
+     }
+ }
+
+$class = new MyClass();
+$class->showConstant();
+
+echo $class->small."<br>";  // SAME CONTSNAT NAME AS PROPERTIES.
+?>
+
