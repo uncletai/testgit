@@ -9,7 +9,7 @@ class num {
 }
 
 class str{
-	public static $c = 'stringas';
+	public static $c = 'strings';
 	public static function ccc($c) {
 		echo self::$c . '<br/>';
 	}
