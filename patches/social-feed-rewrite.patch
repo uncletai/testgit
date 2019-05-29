@@ -1,0 +1,76 @@
+diff --git a/modules/contrib/socialfeed/socialfeed.block.inc b/modules/contrib/socialfeed/socialfeed.block.inc
+index 96ebf98..058d1a2 100644
+--- a/modules/contrib/socialfeed/socialfeed.block.inc
++++ b/modules/contrib/socialfeed/socialfeed.block.inc
+@@ -106,7 +106,11 @@ function socialfeed_facebook_data($i, $facebook_entry, $display_all_posts, $disp
+       $message_feed['full_feed_link'] = t('@teaser_text', array('@teaser_text' => $teaser_text));
+     }
+   }
+-
++  
++  if (isset($facebook_entry['permalink_url'])) {
++    // $message_feed['permalink_url'] = $facebook_entry['permalink_url'];
++    $message_feed['permalink_url'] = 'https://www.facebook.com/Prevenar13Korea/photos/a.1651649471796983/2006404416321485/?type=3&permPage=1';
++  }
+   return $message_feed;
+ }
+ 
+diff --git a/modules/contrib/socialfeed/templates/facebook.tpl.php b/modules/contrib/socialfeed/templates/facebook.tpl.php
+index 69a957b..f471691 100644
+--- a/modules/contrib/socialfeed/templates/facebook.tpl.php
++++ b/modules/contrib/socialfeed/templates/facebook.tpl.php
+@@ -14,40 +14,22 @@
+  * - $facebook_feed['video']: Display videos when post type is Video & Show
+  * Post Video is checked.
+  */
+-?>
+-
+ 
++  $facebook = array_chunk($facebook, 6);
++?>
++<div id="fb-root"></div>
+ <?php if (variable_get('socialfeed_facebook_app_id') != ''): ?>
+-  <ul>
+-    <?php foreach ($facebook as $facebook_feed): ?>
+-    <li>
+-      <!-- Feed -->
+-        <?php if (isset($facebook_feed['message']) && !empty($facebook_feed['message'])): ?>
+-        <div class="fb-message">
+-            <?php print $facebook_feed['message']; ?>
+-        </div>
+-      <!-- Full post link -->
+-        <?php endif; if (isset($facebook_feed['full_feed_link']) && !empty($facebook_feed['full_feed_link'])): ?>
+-        <div class="teaser-link">
+-            <?php print $facebook_feed['full_feed_link']; ?>
+-        </div>
+-      <!-- Time -->
+-        <?php endif; if (isset($facebook_feed['created_stamp']) && !empty($facebook_feed['created_stamp'])): ?>
+-        <div class="fb-time">
+-            <?php print $facebook_feed['created_stamp']; ?>
+-        </div>
+-      <!-- Picture -->
+-        <?php endif; if (isset($facebook_feed['full_picture']) && !empty($facebook_feed['full_picture'])): ?>
+-        <div class="fb-pic">
+-          <img src="<?php print $facebook_feed['full_picture']; ?>">
+-        </div>
+-      <!-- Video -->
+-        <?php endif; if (isset($facebook_feed['video']) && !empty($facebook_feed['video'])): ?>
+-        <div class="fb-video">
+-          <a href="<?php print $facebook_feed['video']; ?>">See Video</a>
+-        </div>
+-        <?php endif; ?>
+-    </li>
++  <ul class="cardnews-area">
++    <?php foreach ($facebook as $key => $facebook_child):  ?>
++      <?php foreach ($facebook_child as $k => $facebook_feed): $facebook_child_count = count($facebook_child) - 1; ?>
++      <?php if ($k == 0): ?>
++      <div class="facebook-page facebook-posts-page-<?php print $key + 1; ?>">
++      <?php endif;?>
++          <div class="fb-post" data-href="<?php print $facebook_feed['permalink_url']; ?>" data-width="380" data-show-text="true"><blockquote cite="<?php print $facebook_feed['permalink_url']; ?>" class="fb-xfbml-parse-ignore"></blockquote></div>
++      <?php if ($k == $facebook_child_count): ?>
++          <div class="read-more"><?php print t('Read more'); ?></div>
++      </div> 
++      <?php endif; endforeach; ?>
+     <?php endforeach; ?>
+   </ul>
+ <?php endif;
