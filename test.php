@@ -8,3 +8,4 @@
 	echo '777';
 	echo '888';
 	echo 'feature1';
+	echo 'feature2';
